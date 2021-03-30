@@ -21,10 +21,13 @@ async function check() {
     await page.click('div[id="lodging_type_dropdown"] > div:nth-child(1)', { waitUntil: 'networkidle0' });
     await page.click('div[id="lodging_type_dropdown"] > div:nth-child(4)', { waitUntil: 'networkidle0' });
     await page.waitForSelector('div#listings_container_cache', { hidden: true });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const result = await page.evaluate(() => {
         let article_node_list = document.querySelectorAll('article.listing_cell');
+
+        if (article_node_list.length <= 1)
+            return [];
 
         let articles = []
         for (const article_node of article_node_list) {
@@ -37,6 +40,11 @@ async function check() {
         }
         return articles
     });
+
+    if (result.length <= 1){
+        console.log(`Found ${result.length} articles`);
+        return;
+    }
 
     let rawdata = fs.readFileSync('results.json');
     let previous_results = JSON.parse(rawdata);
