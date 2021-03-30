@@ -1,0 +1,17 @@
+{
+  "name": "cartedescolocs_checker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mz": "^2.7.0",
+    "node-telegram-bot-api": "^0.51.0",
+    "puppeteer": "^8.0.0",
+    "resemblejs": "^3.2.5"
+  }
+}
