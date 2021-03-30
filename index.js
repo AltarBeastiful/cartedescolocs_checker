@@ -1,14 +1,13 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const compareImages = require("resemblejs/compareImages");
-const fsz = require("mz/fs");
 const TelegramBot = require('node-telegram-bot-api');
+const cron = require('node-cron');
 
 const siteName = 'www.lacartedescolocs.fr/colocations/fr/grand-est/strasbourg';
 const TELEGRAM_BOT_ID = '';
 const CHAT_ID = '';
 
-(async () => {
+async function check() {
 
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -53,4 +52,26 @@ const CHAT_ID = '';
     fs.writeFileSync('results.json', data);
 
     browser.close();
+};
+
+async function current() {
+    let rawdata = fs.readFileSync('results.json');
+    let previous_results = JSON.parse(rawdata);
+
+    const bot = new TelegramBot(TELEGRAM_BOT_ID);
+    if (previous_results.length == 0) {
+        bot.sendMessage(CHAT_ID, 'No results');
+        return;
+    }
+
+    const new_result = previous_results[0]
+    bot.sendMessage(CHAT_ID, 'Latest result is still:\n' + new_result.title + '\n http://www.lacartedescolocs.fr' + new_result.href);
+}
+
+(async () => {
+        await check();
+        cron.schedule("*/5 * * * *", async () => check());
+        cron.schedule("0 9 * * *", async () => current());
 })();
+
+

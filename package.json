@@ -9,9 +9,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mz": "^2.7.0",
     "node-telegram-bot-api": "^0.51.0",
-    "puppeteer": "^8.0.0",
-    "resemblejs": "^3.2.5"
+    "puppeteer": "^8.0.0"
+  },
+  "dependencies": {
+    "node-cron": "^3.0.0"
   }
 }
