@@ -82,8 +82,8 @@ async function current() {
 
 (async () => {
     await check();
-    cron.schedule("*/5 * * * *", async () => check());
-    cron.schedule("0 9 * * *", async () => current());
+    cron.schedule("*/5 * * * *", async () => await check());
+    cron.schedule("0 9 * * *", async () => await current());
 })();
 
 
